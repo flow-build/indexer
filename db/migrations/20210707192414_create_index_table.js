@@ -4,7 +4,7 @@ exports.up = function(knex) {
         table.string("entity_type").notNullable();
         table.string("entity_id").notNullable();
         table.string("process_id").notNullable();
-        table.integer("return_type").notNullable();
+        table.string("return_type").notNullable();
         table.timestamp("created_at").notNullable();
         table.timestamp("deleted_at");
     });

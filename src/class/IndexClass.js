@@ -1,9 +1,6 @@
+const {PersistedEntity} = require('@fieldlink/workflow-engine/src/core/workflow/base');
 
 class Index extends PersistedEntity {
-    constructor(uuid1, entityType, entityId, processId, returnType, created_at, deleted_at) {
-        super();
-    }
-
 
     static getEntityClass() {
         return Index;
@@ -11,76 +8,112 @@ class Index extends PersistedEntity {
 
     static serialize(index) {
         return {
-            id: activity_manager._id,
-            created_at: activity_manager._created_at,
-            type: activity_manager._type,
-            process_state_id: activity_manager._process_state_id,
-            status: activity_manager._status,
-            props: activity_manager._props,
-            parameters: activity_manager._parameters
+            uuid1: index._uuid1,
+            entityType: index._entityType,
+            entityId: index._entityId,
+            processId: index._processId,
+            returnType: index._returnType,
+            created_at: index._created_at,
+            deleted_at: index._deleted_at
         };
     }
 
     static deserialize(serialized) {
         if (serialized) {
-            const activity_manager = activity_manager_factory.getActivityManager(
-                serialized.type,
-                serialized.process_state_id,
-                serialized.status || serialized.activity_status,
-                serialized.props,
-                serialized.parameters
+            const index = new Index(
+                serialized.uuid1,
+                serialized.entityType,
+                serialized.entityId,
+                serialized.processId,
+                serialized.returnType,
+                serialized.created_at,
+                serialized.deleted_at
             );
-            activity_manager._id = serialized.id;
-            activity_manager._created_at = serialized.created_at;
-
-            return activity_manager;
+            return index;
         }
         return undefined;
     }
 
+    constructor(uuid1, entityType, entityId, processId, returnType, created_at, deleted_at) {
+        super();
 
-
-
-    static async fetch(activity_manager_id) {
-        // const activity_manager = await this.getPersist().getActivityDataFromId(activity_manager_id);
-        // if (activity_manager) {
-        //     activity_manager.activities = await this.getPersist().getActivities(activity_manager.id);
-        // }
-        // return activity_manager;
+        this._uuid1 = uuid1;
+        this._entityType = entityType;
+        this._entityId = entityId;
+        this._processId = processId;
+        this._returnType = returnType;
+        this._created_at = created_at;
+        this._deleted_at = deleted_at;
     }
 
-    static async get(activity_manager_id, actor_data) {
-        // let result;
-        // const activity_manager = await this.getPersist().getActivityDataFromId(activity_manager_id);
-        // if (activity_manager) {
-        //     const allowed_activities = await ActivityManager.checkActorPermission([activity_manager], actor_data);
-        //     if (allowed_activities.length === 1) {
-        //         result = allowed_activities[0];
-        //         result.activities = await this.getPersist().getActivities(result.id);
-        //     }
-        // }
-        // return result;
+    get uuid1() {
+        return this._uuid1;
+    }
+
+    get entityType() {
+        return this._entityType;
+    }
+
+    get entityId() {
+        return this._entityId;
+    }
+
+    get processId() {
+        return this._processId;
+    }
+
+    get returnType() {
+        return this._returnType;
     }
 
 
-    set process_state_id(process_state_id) {
-        // this._process_state_id = process_state_id;
-    }
+    /*
 
-    get status() {
-        // return this._status;
-    }
 
-    set status(status) {
-        // this._status = status;
-    }
+            static async fetch(activity_manager_id) {
+                // const activity_manager = await this.getPersist().getActivityDataFromId(activity_manager_id);
+                // if (activity_manager) {
+                //     activity_manager.activities = await this.getPersist().getActivities(activity_manager.id);
+                // }
+                // return activity_manager;
+            }
 
-    get props() {
-        // return this._props;
-    }
+            static async get(activity_manager_id, actor_data) {
+                // let result;
+                // const activity_manager = await this.getPersist().getActivityDataFromId(activity_manager_id);
+                // if (activity_manager) {
+                //     const allowed_activities = await ActivityManager.checkActorPermission([activity_manager], actor_data);
+                //     if (allowed_activities.length === 1) {
+                //         result = allowed_activities[0];
+                //         result.activities = await this.getPersist().getActivities(result.id);
+                //     }
+                // }
+                // return result;
+            }
 
-    set props(props) {
-        // this._props = props;
-    }
+*/
+
+            set process_state_id(process_state_id) {
+                // this._process_state_id = process_state_id;
+            }
+
+            get status() {
+                // return this._status;
+            }
+
+            set status(status) {
+                // this._status = status;
+            }
+
+            get props() {
+                // return this._props;
+            }
+
+            set props(props) {
+                // this._props = props;
+            }
+
 
 }
+
+module.exports.Index = Index;
