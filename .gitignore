@@ -10,3 +10,4 @@ db.json
 .env
 yarn-error.log
 package-lock.json
+.npmrc
