@@ -1,8 +1,18 @@
+const { PersistorProvider } = require("../persist/provider");
+const { IndexEntity } = require("../entities/index");
 
 class Index {
+    constructor(db){
+        this._db = db;
+        PersistorProvider.getPersistor(db);
+    }
 
     async testIndex() {
         console.log ('testIndex works');
+    }
+
+    async saveIndex() {
+        return await new IndexEntity().save();
     }
 
     // static getEntityClass() {

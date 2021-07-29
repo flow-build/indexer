@@ -1,6 +1,6 @@
 const {v1: uuid} = require("uuid");
 
-const knex = require('knex')({
+const knex = require("knex")({
     client: 'pg',
     connection: {
         host: "localhost",
