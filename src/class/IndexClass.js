@@ -11,8 +11,22 @@ class Index {
         console.log ('testIndex works');
     }
 
-    async saveIndex() {
-        return await new IndexEntity().save();
+    async saveIndex(index_obj) {
+        console.log ('savveInndeex works');
+/*        if (index_obj.id) {
+            // return await new IndexEntity(index_obj).update();
+            console.log('Index update');
+        } else {
+            return await new IndexEntity(index_obj).save();
+        }*/
+
+        return await new IndexEntity({
+            "entity_type": "asddasd",
+            "entity_id": "45564654",
+            "process_id": "8798711",
+            "return_type": "process"
+        }).save();
+
     }
 
     // static getEntityClass() {
@@ -129,4 +143,6 @@ class Index {
 
 }
 
-module.exports.Index = Index;
+module.exports = {
+    Index
+};
