@@ -7,6 +7,8 @@ exports.up = function(knex) {
         table.string("return_type").notNullable();
         table.timestamp("created_at").notNullable();
         table.timestamp("deleted_at");
+        table.index(["process_id"],"idx_process");
+        table.index(["entity_id"],"idx_entity");
     });
 };
 
