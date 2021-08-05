@@ -4,17 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "migrations": "knex --env ${KNEX_ENV} --knexfile knexfile.js migrate:latest",
+    "seeds": "knex --env ${KNEX_ENV} --knexfile knexfile.js seed:run",
     "test": "jest --coverage",
-    "migrations": "knex --env ${NODE_ENV} --knexfile knexfile.js migrate:latest"
+    "tests": "npm -- test -i"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "knex": "^0.95.4",
-    "pg": "^7.18.2",
-    "uuid": "^8.3.2",
-    "@fieldlink/workflow-engine": "^8.1.0"
+    "knex": "^0.95.9",
+    "pg": "^8.7.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
