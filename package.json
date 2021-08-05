@@ -17,6 +17,7 @@
     "@fieldlink/workflow-engine": "^8.1.0"
   },
   "devDependencies": {
+    "eslint": "^7.32.0",
     "jest": "^27.0.6"
   }
 }
