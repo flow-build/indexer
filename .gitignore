@@ -11,3 +11,4 @@ db.json
 yarn-error.log
 package-lock.json
 .npmrc
+coverage/
