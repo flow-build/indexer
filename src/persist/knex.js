@@ -1,91 +1,105 @@
-
 class KnexPersist {
-    constructor(db, table) {
-        this._db = db;
-        this._table = table;
-    }
+  constructor(db, table) {
+    this._db = db;
+    this._table = table;
+  }
 
-    async save(obj) {
-        const is_update = obj.id && await this.get(obj.id);
-        if (is_update) {
-            return await this._update(obj.id, obj);
-        }
-        return await this._create(obj);
+  async save(obj) {
+    const is_update = obj.id && (await this.get(obj.id));
+    if (is_update) {
+      return await this._update(obj.id, obj);
     }
+    return await this._create(obj);
+  }
 
-    async get(obj_id) {
-        return await this._db
-            .select("*")
-            .from(this._table)
-            .where({ "id": obj_id })
-            .first();
-    }
+  async get(obj_id) {
+    return await this._db
+      .select("*")
+      .from(this._table)
+      .where({ id: obj_id })
+      .first();
+  }
 
-    async getAll() {
-        return await this._db(this._table).select();
-    }
+  async getAll() {
+    return await this._db(this._table).select();
+  }
 
-    async delete(obj_id) {
-        return await this._db(this._table)
-            .delete()
-            .where("id", obj_id);
-    }
+  async delete(obj_id) {
+    return await this._db(this._table).delete().where("id", obj_id);
+  }
 
-    async _create(obj) {
-        try {
-            const obj_id = await this._db(this._table)
-                .insert(obj)
-                .returning("id");
-            return { obj_id: obj_id[0] };
-        } catch (err) {
-            return { error: err };
-        }
+  async _create(obj) {
+    try {
+      const obj_id = await this._db(this._table).insert(obj).returning("id");
+      return { id: obj_id[0] };
+    } catch (err) {
+      return { error: err };
     }
+  }
 
-    async _update(obj_id, obj) {
-        try {
-            await this._db(this._table)
-                .where("id", obj_id)
-                .update(obj);
-            return { obj_id };
-        } catch (err) {
-            return { error: err };
-        }
+  async _update(obj_id, obj) {
+    try {
+      await this._db(this._table).where("id", obj_id).update(obj);
+      return { obj_id };
+    } catch (err) {
+      return { error: err };
     }
+  }
 }
 
 class IndexKnexPersist extends KnexPersist {
-    constructor(db) {
-        super(db, "index");
-    }
+  constructor(db) {
+    super(db, "index");
+  }
 
-    async delete(obj_id) {
-        await this._db("hierarchy_members")
-            .delete()
-            .where("hierarchy_members.actor_id", obj_id)
-            .orWhere("hierarchy_members.parent_id", obj_id);
+  async getProcessByEntityType(entityType) {
+    let dbData = await this._db(this._table)
+      .select("entity_id")
+      .count("process_id")
+      .where("entity_type", entityType)
+      .groupBy("entity_id");
 
-        await this._db("actor_auth")
-            .delete()
-            .where("actor_auth.actor_id", obj_id);
+    return dbData;
+  }
 
-        await this._db("actor_profile")
-            .delete()
-            .where("actor_profile.actor_id", obj_id);
+  async getByEntity(entityId, limit) {
+    let dbData = await this._db(this._table)
+      .select("*")
+      .where("entity_id", entityId)
+      .limit(limit)
+      .orderBy("created_at");
 
-        await this._db("auth_adhoc")
-            .delete()
-            .where("auth_adhoc.actor_id", obj_id);
+    return dbData;
+  }
 
-        return await this._db(this._table)
-            .delete()
-            .where("id", obj_id);
-    }
+  async getByProcess(processId, limit) {
+    let dbData = await this._db(this._table)
+      .select("*")
+      .where("process_id", processId)
+      .limit(limit)
+      .orderBy("created_at");
 
+    return dbData;
+  }
+
+  async delete(id) {
+    return await this._db(this._table).where("id", id).delete();
+  }
+
+  async deleteAllByProcess(processId) {
+    return await this._db(this._table)
+      .where("process_id", processId)
+      .delete(["id", "entity_id", "entity_type"]);
+  }
+
+  async deleteAllByEntity(entityId) {
+    return await this._db(this._table)
+      .where("entity_id", entityId)
+      .delete(["id", "process_id"]);
+  }
 }
 
-
 module.exports = {
-    KnexPersist: KnexPersist,
-    IndexKnexPersist: IndexKnexPersist
+  KnexPersist,
+  IndexKnexPersist,
 };

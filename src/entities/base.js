@@ -19,7 +19,7 @@ class BaseEntity {
 class PersistedEntity extends BaseEntity {
     static getEntityClass() {
         throw Error("Subclass and implement");
-    };
+    }
 
     static getPersist() {
         return new PersistorSingleton()
