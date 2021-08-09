@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^8.6.2",
+    "ajv-formats": "^2.1.0",
     "dotenv": "^10.0.0",
     "knex": "^0.95.9",
     "pg": "^8.7.1",
