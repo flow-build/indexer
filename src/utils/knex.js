@@ -24,12 +24,6 @@ class KnexPersist {
         return await this._db(this._table).select();
     }
 
-    async delete(obj_id) {
-        return await this._db(this._table)
-            .delete()
-            .where("id", obj_id);
-    }
-
     async _create(obj) {
         try {
             const obj_id = await this._db(this._table)
@@ -41,12 +35,12 @@ class KnexPersist {
         }
     }
 
-    async _update(obj_id, obj) {
+    async _update(id, obj) {
         try {
             await this._db(this._table)
-                .where("id", obj_id)
+                .where("id", id)
                 .update(obj);
-            return { obj_id };
+            return { id };
         } catch (err) {
             return { error: err };
         }
