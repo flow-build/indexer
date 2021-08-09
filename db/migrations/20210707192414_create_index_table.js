@@ -4,7 +4,7 @@ exports.up = function (knex) {
     table.string("entity_type").notNullable();
     table.string("entity_id").notNullable();
     table.string("process_id").notNullable();
-    table.string("return_type").notNullable();
+    table.string("activity_manager_id");
     table.timestamp("created_at").notNullable();
     table.index(["process_id"], "idx_process");
     table.index(["entity_id"], "idx_entity");
