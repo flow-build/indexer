@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { abstractFactory } = require("./utils/factory");
 
 class PersistorSingleton {
