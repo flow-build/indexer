@@ -12,7 +12,6 @@ class IndexEntity extends PersistedEntity {
       entity_type: this._index_obj.entity_type,
       entity_id: this._index_obj.entity_id,
       process_id: this._index_obj.process_id,
-      return_type: this._index_obj.return_type,
       created_at: this._created_at,
     };
   }
@@ -24,7 +23,6 @@ class IndexEntity extends PersistedEntity {
         entity_type: data.entity_type,
         entity_id: data.entity_id,
         process_id: data.process_id,
-        return_type: data.return_type,
         created_at: data.created_at,
       };
     });
@@ -38,9 +36,17 @@ class IndexEntity extends PersistedEntity {
     return IndexEntity;
   }
 
-  async createIndex(indexObj) {
-    console.log("createIndex");
-    return await new IndexEntity(indexObj).save();
+  static getSchema() {
+    return {
+      type: "object",
+      properties: {
+        entity_type: { type: "string" },
+        entity_id: { type: "string" },
+        process_id: { type: "string", format: "uuid" },
+        activity_manager_id: { type: "string", format: "uuid" },
+      },
+      required: ["process_id", "entity_id"],
+    };
   }
 
   async getProcessByEntityType(entityType) {
