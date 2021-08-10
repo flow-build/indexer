@@ -20,27 +20,14 @@ class KnexPersist {
       .first();
   }
 
-  async getAll() {
-    return await this._db(this._table).select();
-  }
-
-  async delete(obj_id) {
-    return await this._db(this._table).delete().where("id", obj_id);
+  async delete(id) {
+    return await this._db(this._table).delete().where("id", id);
   }
 
   async _create(obj) {
     try {
       const obj_id = await this._db(this._table).insert(obj).returning("id");
       return { id: obj_id[0] };
-    } catch (err) {
-      return { error: err };
-    }
-  }
-
-  async _update(obj_id, obj) {
-    try {
-      await this._db(this._table).where("id", obj_id).update(obj);
-      return { obj_id };
     } catch (err) {
       return { error: err };
     }
@@ -80,10 +67,6 @@ class IndexKnexPersist extends KnexPersist {
       .orderBy("created_at");
 
     return dbData;
-  }
-
-  async delete(id) {
-    return await this._db(this._table).where("id", id).delete();
   }
 
   async deleteAllByProcess(processId) {
