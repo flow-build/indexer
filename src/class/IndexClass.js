@@ -1,6 +1,7 @@
 const { PersistorProvider } = require("../persist/provider");
 const { IndexEntity } = require("../entities/index");
 const { validateDataWithSchema } = require("../validators/base");
+const { logger } = require("../utils/logger");
 class Index {
   constructor(db) {
     this._db = db;
@@ -8,7 +9,7 @@ class Index {
   }
 
   async createIndex(indexObj) {
-    console.log("createIndex");
+    logger.debug("[Indexer] createIndex");
     const schema = IndexEntity.getSchema();
     const validation = await validateDataWithSchema(schema, indexObj);
     if (validation.isValid) {
@@ -30,32 +31,32 @@ class Index {
   }
 
   async fetchProcessesByEntityType(entityType) {
-    console.log("fetchProcessesByEntityType");
+    logger.debug("[Indexer] fetchProcessesByEntityType");
     return await new IndexEntity().getProcessByEntityType(entityType);
   }
 
   async fetchProcessByEntity(entityId, limit = 10) {
-    console.log("fetchProcessByEntity");
+    logger.debug("[Indexer] fetchProcessByEntity");
     return await new IndexEntity().getByEntity(entityId, limit);
   }
 
   async fetchEntitiesByProcess(processId, limit = 10) {
-    console.log("fetchEntitiesByProcess");
+    logger.debug("[Indexer] fetchEntitiesByProcess");
     return await new IndexEntity().getByProcess(processId, limit);
   }
 
   async removeIndex(id) {
-    console.log("removeIndex");
+    logger.debug("[Indexer] removeIndex");
     return await new IndexEntity().delete(id);
   }
 
   async removeIndexByProcess(processId) {
-    console.log("removeIndexByProcess");
+    logger.debug("[Indexer] removeIndexByProcess");
     return await new IndexEntity().deleteAllByProcess(processId);
   }
 
   async removeIndexByEntity(entityId) {
-    console.log("removeIndexByEntity");
+    logger.debug("[Indexer] removeIndexByEntity");
     return await new IndexEntity().deleteAllByEntity(entityId);
   }
 }
