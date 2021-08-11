@@ -1,104 +1,180 @@
-const {v1: uuid} = require("uuid");
+const { logger } = require("../utils/logger");
+const Index = require("../class/IndexClass");
 
-const knex = require("knex")({
-    client: 'pg',
-    connection: {
-        host: "localhost",
-        user: "postgres",
-        password: "postgres",
-        database: "workflow",
-        port: 5432
+const formatErrorResponse = (message, error) => {
+  return {
+    message: {
+      message: `Failed at ${message}`,
+      error: error,
+    },
+  };
+};
+
+const createIndex = async (ctx, next) => {
+  logger.debug("[Indexer] Called saveIndex");
+  const indexObj = ctx.request.body;
+  const _idx = new Index(ctx.state.persist);
+
+  try {
+    const result = _idx.createIndex(indexObj);
+    if (!result.error) {
+      ctx.status = 200;
+      ctx.body = result;
+    } else {
+      ctx.status = 400;
+      ctx.body = formatErrorResponse("createIndex", result.error);
     }
-});
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = formatErrorResponse(err.message, err);
+  }
 
-async function saveIndex(ctx, next) {
-    console.log('[PLUGIN] Called saveIndex');
+  return next;
+};
 
-    try {
-        const {entity_type, entity_id, process_id, return_type} = ctx.request.body;
+const readProcessesByEntity = async (ctx, next) => {
+  logger.debug("[Indexer] Called readProcessesByEntity");
+  const _idx = new Index(ctx.state.persist);
+  const entityId = ctx.params.id;
+  const limit = ctx.query.limit;
 
-        await knex.insert({
-            id: uuid(),
-            entity_type: entity_type,
-            entity_id: entity_id,
-            process_id: process_id,
-            return_type: return_type,
-            created_at: new Date()})
-            .into('index')
-            .returning('id')
-            .then(function (id) {
-                ctx.status = 201;
-                ctx.body =  {
-                    index_id: id[0]
-                };
-            });
-
-    } catch (err) {
-        ctx.status = 400;
-        ctx.body = {message: `Failed at ${err.message}`, error: err};
+  try {
+    const result = _idx.fetchProcessByEntity(entityId, limit);
+    if (!result.error) {
+      ctx.status = 200;
+      ctx.body = result;
+    } else {
+      ctx.status = 400;
+      ctx.body = formatErrorResponse("fetchProcessByEntity", result.error);
     }
-}
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = formatErrorResponse(err.message, err);
+  }
 
-async function fetchIndex(ctx, next) {
-    console.log('[PLUGIN] Called fetchIndex');
+  return next;
+};
 
-    try {
-        const { id } = ctx.request.body;
+const readProcessesByEntityType = async (ctx, next) => {
+  logger.debug("[Indexer] Called readProcessesByEntityType");
+  const _idx = new Index(ctx.state.persist);
+  const type = ctx.params.type;
 
-        const fetchedIndex =  await knex.select().table('index').where({ id: id, deleted_at: null });
-
-        ctx.status = 200;
-        ctx.body = fetchedIndex;
-
-    } catch (err) {
-        ctx.status = 400;
-        ctx.body = {message: `Failed at ${err.message}`, error: err};
+  try {
+    const result = _idx.fetchProcessesByEntityType(type);
+    if (!result.error) {
+      ctx.status = 200;
+      ctx.body = result;
+    } else {
+      ctx.status = 400;
+      ctx.body = formatErrorResponse(
+        "fetchProcessesByEntityType",
+        result.error
+      );
     }
-}
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = formatErrorResponse(err.message, err);
+  }
 
-async function deleteIndex(ctx, next) {
-    console.log('[PLUGIN] Called deleteIndex');
+  return next;
+};
 
-    try {
-        const { id } = ctx.request.body;
+const readEntitiesByProcess = async (ctx, next) => {
+  logger.debug("[Indexer] Called readEntitiesByProcess");
+  const _idx = new Index(ctx.state.persist);
+  const processId = ctx.params.id;
+  const limit = ctx.query.limit;
 
-        await knex.table('index')
-            .where({ id: id })
-            .update({ deleted_at: new Date() })
-
-        ctx.status = 200;
-        ctx.body = 'Deleted Index id ' + id;
-
-    } catch (err) {
-        ctx.status = 400;
-        ctx.body = {message: `Failed at ${err.message}`, error: err};
+  try {
+    const result = _idx.fetchEntitiesByProcess(processId, limit);
+    if (!result.error) {
+      ctx.status = 200;
+      ctx.body = result;
+    } else {
+      ctx.status = 400;
+      ctx.body = formatErrorResponse("fetchEntitiesByProcess", result.error);
     }
-}
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = formatErrorResponse(err.message, err);
+  }
 
-async function updateIndex(ctx, next) {
-    console.log('[PLUGIN] Called updateIndex');
+  return next;
+};
 
-    try {
-        const { id, entity_type, entity_id, process_id, return_type } = ctx.request.body;
+const deleteIndex = async (ctx, next) => {
+  logger.debug("[Indexer] Called deleteIndex");
+  const _idx = new Index(ctx.state.persist);
+  const indexId = ctx.params.id;
 
-        await knex.table('index')
-            .where({ id: id })
-            .update({
-                entity_type, entity_id, process_id, return_type
-            });
-
-        ctx.status = 200;
-        ctx.body = 'Updated Index id ' + id;
-
-    } catch (err) {
-        ctx.status = 400;
-        ctx.body = {message: `Failed at ${err.message}`, error: err};
+  try {
+    const result = _idx.removeIndex(indexId);
+    if (!result.error) {
+      ctx.status = 200;
+      ctx.body = result;
+    } else {
+      ctx.status = 400;
+      ctx.body = formatErrorResponse("removeIndex", result.error);
     }
-}
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = formatErrorResponse(err.message, err);
+  }
+
+  return next;
+};
+
+const deleteIndexFromProcess = async (ctx, next) => {
+  logger.debug("[Indexer] Called deleteIndexFromProcess");
+  const _idx = new Index(ctx.state.persist);
+  const processId = ctx.params.id;
+
+  try {
+    const result = _idx.removeIndexByProcess(processId);
+    if (!result.error) {
+      ctx.status = 200;
+      ctx.body = result;
+    } else {
+      ctx.status = 400;
+      ctx.body = formatErrorResponse("removeIndexByProcess", result.error);
+    }
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = formatErrorResponse(err.message, err);
+  }
+
+  return next;
+};
+
+const deleteIndexFromEntity = async (ctx, next) => {
+  logger.debug("[Indexer] Called deleteIndexFromProcess");
+  const _idx = new Index(ctx.state.persist);
+  const entityId = ctx.params.id;
+
+  try {
+    const result = _idx.removeIndexByEntity(entityId);
+    if (!result.error) {
+      ctx.status = 200;
+      ctx.body = result;
+    } else {
+      ctx.status = 400;
+      ctx.body = formatErrorResponse("removeIndexByEntity", result.error);
+    }
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = formatErrorResponse(err.message, err);
+  }
+
+  return next;
+};
 
 module.exports = {
-    saveIndex,
-    fetchIndex,
-    deleteIndex,
-    updateIndex
+  createIndex,
+  readProcessesByEntity,
+  readProcessesByEntityType,
+  readEntitiesByProcess,
+  deleteIndex,
+  deleteIndexFromProcess,
+  deleteIndexFromEntity,
 };
