@@ -1,5 +1,11 @@
-const { Index } = require('./src/class/IndexClass');
+const { Index } = require("./src/class/IndexClass");
+const Controller = require("./src/controller/indexController");
+const createIndexNode = require("./src/nodes/createIndexNode");
+const retrieveProcessnode = require("./src/nodes/retrieveProcessNode");
 
 module.exports = {
-    Index
-}
+  Index,
+  Controller,
+  createIndexNode,
+  retrieveProcessnode,
+};
