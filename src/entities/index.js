@@ -12,6 +12,7 @@ class IndexEntity extends PersistedEntity {
       entity_type: this._index_obj.entity_type,
       entity_id: this._index_obj.entity_id,
       process_id: this._index_obj.process_id,
+      activity_manager_id: this._index_obj.activity_manager_id,
       created_at: this._created_at,
     };
   }
@@ -23,6 +24,7 @@ class IndexEntity extends PersistedEntity {
         entity_type: data.entity_type,
         entity_id: data.entity_id,
         process_id: data.process_id,
+        activity_manager_id: data.activity_manager_id,
         created_at: data.created_at,
       };
     });
