@@ -32,34 +32,34 @@ class Index {
     }
   }
 
-  async fetchProcessesByEntityType(entityType) {
+  async fetchProcessesByEntityType(entity_type) {
     logger.debug("[Indexer] fetchProcessesByEntityType");
-    return await new IndexEntity().getProcessByEntityType(entityType);
+    return await new IndexEntity().getProcessByEntityType(entity_type);
   }
 
-  async fetchProcessByEntity(entityId, limit = 10) {
+  async fetchProcessByEntity(entity_id, limit = 10) {
     logger.debug("[Indexer] fetchProcessByEntity");
-    return await new IndexEntity().getByEntity(entityId, limit);
+    return await new IndexEntity().getByEntity(entity_id, limit);
   }
 
-  async fetchEntitiesByProcess(processId, limit = 10) {
+  async fetchEntitiesByProcess(process_id, limit = 10) {
     logger.debug("[Indexer] fetchEntitiesByProcess");
-    return await new IndexEntity().getByProcess(processId, limit);
+    return await new IndexEntity().getByProcess(process_id, limit);
   }
 
   async removeIndex(id) {
     logger.debug("[Indexer] removeIndex");
-    return await new IndexEntity().delete(id);
+    return await new IndexEntity().delete(id);w
   }
 
-  async removeIndexByProcess(processId) {
+  async removeIndexByProcess(process_id) {
     logger.debug("[Indexer] removeIndexByProcess");
-    return await new IndexEntity().deleteAllByProcess(processId);
+    return await new IndexEntity().deleteAllByProcess(process_id);
   }
 
-  async removeIndexByEntity(entityId) {
+  async removeIndexByEntity(entity_id) {
     logger.debug("[Indexer] removeIndexByEntity");
-    return await new IndexEntity().deleteAllByEntity(entityId);
+    return await new IndexEntity().deleteAllByEntity(entity_id);
   }
 }
 

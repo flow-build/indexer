@@ -5,7 +5,7 @@ module.exports = {
     test: {
         client: 'pg',
         connection: {
-            host: 'index_db',
+            host: 'localhost',
             database: "indexer",
             user: 'username',
             password: 'password'
