@@ -49,7 +49,7 @@ class Index {
 
   async removeIndex(id) {
     logger.debug("[Indexer] removeIndex");
-    return await new IndexEntity().delete(id);w
+    return await new IndexEntity().delete(id);
   }
 
   async removeIndexByProcess(process_id) {
