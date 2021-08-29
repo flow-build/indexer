@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fieldlink/workflow-engine": "^8.1.0",
     "ajv": "^8.6.2",
     "ajv-formats": "^2.1.0",
     "dotenv": "^10.0.0",
@@ -22,7 +21,13 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@flowbuild/engine": "^2.2.0",
     "eslint": "^7.32.0",
     "jest": "^27.0.6"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flow-build/indexer.git"
+  },
+  "homepage": "https://github.com/flow-build/indexer#readme"
 }
