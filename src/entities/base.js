@@ -22,9 +22,7 @@ class PersistedEntity extends BaseEntity {
   }
 
   static getPersist() {
-    return new PersistorSingleton().getPersistInstance(
-      this.getEntityClass().name
-    );
+    return new PersistorSingleton().getPersistInstance(this.getEntityClass().name);
   }
 
   constructor() {
@@ -40,7 +38,5 @@ class PersistedEntity extends BaseEntity {
   }
 }
 
-module.exports = {
-  BaseEntity: BaseEntity,
-  PersistedEntity: PersistedEntity,
-};
+module.exports.BaseEntity = BaseEntity;
+module.exports.PersistedEntity = PersistedEntity;

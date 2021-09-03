@@ -1,5 +1,5 @@
 const { logger } = require("../utils/logger");
-const Index = require("../class/IndexClass");
+const { Index } = require("../class/IndexClass");
 
 const formatErrorResponse = (message, error) => {
   return {
@@ -67,10 +67,7 @@ const readProcessesByEntityType = async (ctx, next) => {
       ctx.body = result;
     } else {
       ctx.status = 400;
-      ctx.body = formatErrorResponse(
-        "fetchProcessesByEntityType",
-        result.error
-      );
+      ctx.body = formatErrorResponse("fetchProcessesByEntityType", result.error);
     }
   } catch (err) {
     ctx.status = 400;

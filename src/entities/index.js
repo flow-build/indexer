@@ -52,22 +52,16 @@ class IndexEntity extends PersistedEntity {
   }
 
   async getProcessByEntityType(entityType) {
-    return await this.constructor
-      .getPersist()
-      .getProcessByEntityType(entityType);
+    return await this.constructor.getPersist().getProcessByEntityType(entityType);
   }
 
   async getByEntity(entityId, limit) {
-    let dbData = await this.constructor
-      .getPersist()
-      .getByEntity(entityId, limit);
+    let dbData = await this.constructor.getPersist().getByEntity(entityId, limit);
     return this.deserialized(dbData);
   }
 
   async getByProcess(processId, limit = 10) {
-    let dbData = await this.constructor
-      .getPersist()
-      .getByProcess(processId, limit);
+    let dbData = await this.constructor.getPersist().getByProcess(processId, limit);
     return this.deserialized(dbData);
   }
 
@@ -84,6 +78,4 @@ class IndexEntity extends PersistedEntity {
   }
 }
 
-module.exports = {
-  IndexEntity,
-};
+module.exports.IndexEntity = IndexEntity;

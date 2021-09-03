@@ -15,7 +15,7 @@ class Index {
     if (validation.isValid) {
       const response = await new IndexEntity(indexObj).save();
       if (response.error) {
-        logger.error("[Indexer] createIndex error on save", response.error);
+        logger.warn("[Indexer] createIndex error on save", response.error);
         return {
           errorType: "save",
           errorMessage: response.error,
@@ -24,7 +24,7 @@ class Index {
         return response;
       }
     } else {
-      logger.error("[Indexer] createIndex error on validation", validation.errors);
+      logger.warn("[Indexer] createIndex error on validation", validation.errors);
       return {
         errorType: "validation",
         errorMessage: validation.errors,
