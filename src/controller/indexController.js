@@ -16,7 +16,7 @@ const createIndex = async (ctx, next) => {
   const _idx = new Index(ctx.state.persist);
 
   try {
-    const result = _idx.createIndex(indexObj);
+    const result = await _idx.createIndex(indexObj);
     if (!result.error) {
       ctx.status = 200;
       ctx.body = result;
@@ -39,7 +39,7 @@ const readProcessesByEntity = async (ctx, next) => {
   const limit = ctx.query.limit;
 
   try {
-    const result = _idx.fetchProcessByEntity(entityId, limit);
+    const result = await _idx.fetchProcessByEntity(entityId, limit);
     if (!result.error) {
       ctx.status = 200;
       ctx.body = result;
@@ -61,7 +61,7 @@ const readProcessesByEntityType = async (ctx, next) => {
   const type = ctx.params.type;
 
   try {
-    const result = _idx.fetchProcessesByEntityType(type);
+    const result = await _idx.fetchProcessesByEntityType(type);
     if (!result.error) {
       ctx.status = 200;
       ctx.body = result;
@@ -84,7 +84,7 @@ const readEntitiesByProcess = async (ctx, next) => {
   const limit = ctx.query.limit;
 
   try {
-    const result = _idx.fetchEntitiesByProcess(processId, limit);
+    const result = await _idx.fetchEntitiesByProcess(processId, limit);
     if (!result.error) {
       ctx.status = 200;
       ctx.body = result;
@@ -106,7 +106,7 @@ const deleteIndex = async (ctx, next) => {
   const indexId = ctx.params.id;
 
   try {
-    const result = _idx.removeIndex(indexId);
+    const result = await _idx.removeIndex(indexId);
     if (!result.error) {
       ctx.status = 200;
       ctx.body = result;
@@ -128,7 +128,7 @@ const deleteIndexFromProcess = async (ctx, next) => {
   const processId = ctx.params.id;
 
   try {
-    const result = _idx.removeIndexByProcess(processId);
+    const result = await _idx.removeIndexByProcess(processId);
     if (!result.error) {
       ctx.status = 200;
       ctx.body = result;
@@ -150,7 +150,7 @@ const deleteIndexFromEntity = async (ctx, next) => {
   const entityId = ctx.params.id;
 
   try {
-    const result = _idx.removeIndexByEntity(entityId);
+    const result = await _idx.removeIndexByEntity(entityId);
     if (!result.error) {
       ctx.status = 200;
       ctx.body = result;
