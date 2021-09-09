@@ -3,10 +3,8 @@ const { Index } = require("../class/IndexClass");
 
 const formatErrorResponse = (message, error) => {
   return {
-    message: {
-      message: `Failed at ${message}`,
-      error: error,
-    },
+    message: `Failed at ${message}`,
+    error: error,
   };
 };
 
@@ -17,16 +15,16 @@ const createIndex = async (ctx, next) => {
 
   try {
     const result = await _idx.createIndex(indexObj);
-    if (!result.error) {
+    if (!result.errorType) {
       ctx.status = 200;
       ctx.body = result;
     } else {
       ctx.status = 400;
-      ctx.body = formatErrorResponse("createIndex", result.error);
+      ctx.body = formatErrorResponse("createIndex", result);
     }
   } catch (err) {
     ctx.status = 400;
-    ctx.body = formatErrorResponse(err.message, err);
+    ctx.body = formatErrorResponse(err.errorType, err);
   }
 
   return next;

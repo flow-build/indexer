@@ -1,6 +1,6 @@
 {
   "name": "@flowbuild/indexer",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-beta.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,9 +21,12 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@flowbuild/engine": "^2.2.0",
+    "@flowbuild/engine": "^2.3.0",
     "eslint": "^7.32.0",
     "jest": "^27.0.6"
+  },
+  "bin": {
+    "init": "./src/init.js"
   },
   "repository": {
     "type": "git",
