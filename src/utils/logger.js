@@ -1,12 +1,12 @@
 const { createLogger, format, transports } = require("winston");
 
 const logger = createLogger({
-  level: process.env.KOA_LOG_LEVEL || "info",
+  level: process.env.LOG_LEVEL || "silly",
   format: format.combine(
     format.colorize(),
     format.timestamp(),
-    format.label({ label: "KW", message: true }),
-    format.align(),
+    format.label({ label: "Indexer", message: true }),
+    format.splat(),
     format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
   ),
   transports: [new transports.Console()],
