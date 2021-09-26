@@ -15,7 +15,7 @@ services:
   app:
     image: node:14.16.1
     environment:
-      KNEX_ENV: test
+      KNEX_ENV: docker
     container_name: index_app
     restart: on-failure:10 # necessary due to possibility of postgres not being ready when service runs
     depends_on:
@@ -25,4 +25,4 @@ services:
       - /usr/app/node_modules
     working_dir: /usr/app
     #command: ./scripts/run_tests.sh
-    command: bash -c " npm install && npm run migrations && npm run seeds && npm run tests "
+    command: bash -c " npm install && npm run migrations && npm run tests "
