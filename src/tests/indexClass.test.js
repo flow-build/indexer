@@ -39,6 +39,9 @@ describe("IndexClass tests", () => {
     expect(response.id).not.toBeDefined();
     expect(response.errorType).toBeDefined();
     expect(response.errorType).toBe("validation");
+    expect(response.errorMessage).toBeDefined();
+    expect(response.errorMessage).toHaveLength(1);
+    expect(response.errorMessage[0].message).toBe("must have required property 'process_id'");
   });
 
   test("createIndex should require entityId", async () => {
@@ -52,6 +55,9 @@ describe("IndexClass tests", () => {
     expect(response.id).not.toBeDefined();
     expect(response.errorType).toBeDefined();
     expect(response.errorType).toBe("validation");
+    expect(response.errorMessage).toBeDefined();
+    expect(response.errorMessage).toHaveLength(1);
+    expect(response.errorMessage[0].message).toBe("must have required property 'entity_id'");
   });
 
   test("createIndex should not allow duplicated entity & process", async () => {
@@ -81,11 +87,44 @@ describe("IndexClass tests", () => {
     expect(response).toHaveLength(1);
   });
 
-  test("fetchEntitiesByProcess should work", async () => {
+  test("fetchEntitiesByProcess should work for a single process_id", async () => {
     const _index = new Index(db);
     const response = await _index.fetchEntitiesByProcess(processId);
     expect(response).toBeDefined();
     expect(response).toHaveLength(1);
+  });
+
+  test("fetchEntitiesByProcess should work for multiple process_ids", async () => {
+    const _index = new Index(db);
+    const secondProcessId = uuid();
+    const secondeSample = {
+      entity_type: "other",
+      entity_id: uuid(),
+      process_id: secondProcessId,
+    };
+    await _index.createIndex(secondeSample);
+
+    const response = await _index.fetchEntitiesByProcess([processId, secondProcessId]);
+    expect(response).toBeDefined();
+    expect(response).toHaveLength(2);
+  });
+
+  test("fetchEntitiesByProcess should not work if process_id is not a uuid", async () => {
+    const _index = new Index(db);
+    const id = "not_a_uuid";
+    const response = await _index.fetchEntitiesByProcess(id);
+    expect(response).toBeDefined();
+    expect(response.errorType).toBeDefined();
+    expect(response.errorType).toBe("validation");
+  });
+
+  test("fetchEntitiesByProcess should work if process_id is a array of strings", async () => {
+    const _index = new Index(db);
+    const id = ["not_a_uuid", "nor_this"];
+    const response = await _index.fetchEntitiesByProcess(id);
+    expect(response).toBeDefined();
+    expect(response.errorType).toBeDefined();
+    expect(response.errorType).toBe("validation");
   });
 
   test("removeIndex should work", async () => {
