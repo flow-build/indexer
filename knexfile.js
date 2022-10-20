@@ -27,7 +27,7 @@ module.exports = {
     connection: {
       host: "localhost",
       database: "indexer",
-      user: "username",
+      user: "postgres",
       password: process.env.DB_PASSWORD,
     },
     pool: {
