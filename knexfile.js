@@ -8,7 +8,7 @@ module.exports = {
       host: "index_db",
       database: "indexer",
       user: "username",
-      password: "password",
+      password: process.env.DB_PASSWORD || "password",
     },
     pool: {
       min: 2,
@@ -27,7 +27,7 @@ module.exports = {
       host: "localhost",
       database: "indexer",
       user: "username",
-      password: "password",
+      password: process.env.DB_PASSWORD,
     },
     pool: {
       min: 2,
@@ -40,7 +40,7 @@ module.exports = {
       directory: path.join(BASE_PATH, "seeds"),
     },
   },
-  development: {
+  prod: {
     client: "pg",
     connection: {
       host: process.env.DB_HOST,
