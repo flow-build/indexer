@@ -22,9 +22,9 @@ jobs:
       postgres:
         image: postgres
         env:
-          DB_USER: postgres
-          DB_PASSWORD: postgres
-          DB_DATABASE: indexer
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DATABASE: indexer
         ports:
           - 5432:5432
         options: >-
