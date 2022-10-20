@@ -1,8 +1,8 @@
-version: "3"
+version: "3.9"
 
 services:
   postgres:
-    image: postgres:11.4
+    image: postgres:14.5
     container_name: index_db
     restart: always
     environment:
@@ -13,7 +13,7 @@ services:
       - 5432:5432
 
   app:
-    image: node:14.16.1
+    image: node:16.15
     environment:
       KNEX_ENV: docker
     container_name: index_app

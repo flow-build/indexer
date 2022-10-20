@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require("path");
 const BASE_PATH = path.join(__dirname, "db");
 
@@ -47,6 +48,7 @@ module.exports = {
       database: process.env.DB_DATABASE,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
+      port: process.env.DB_PORT,
     },
     pool: {
       min: 2,
