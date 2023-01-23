@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/flow-build/indexer/compare/v1.0.0...v1.0.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* adjust sec issue updating knex version ([9122b76](https://github.com/flow-build/indexer/commit/9122b76a108e50b2cfa04ee745bbe1cb31f4bed0))
+
 ## 1.0.0 (2022-10-20)
 
 
